@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self Practice — QuizFlow</title>
+    <meta name="description" content="AI-powered self-practice test with progressive difficulty levels">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <span class="corner-mark">◈</span>
+
+    <div class="stage practice-stage">
+        <div class="card">
+            <div class="card-header">
+                <div class="header-label">Self Practice Mode</div>
+                <div class="header-title">Practice</div>
+                <div class="header-subtitle" id="practiceSubtitle">Master any subject at your own pace</div>
+                <div class="header-deco">✦</div>
+            </div>
+            <div class="card-body">
+
+                <!-- ═══ SETUP SECTION ═══ -->
+                <div id="setupSection">
+                    <div class="section-label">Choose Your Subject</div>
+                    <div class="section-desc">Enter any topic and the AI will generate questions with progressive difficulty levels.</div>
+
+                    <div class="input-group">
+                        <label>Subject / Topic</label>
+                        <input type="text" id="subjectInput" placeholder="e.g. JavaScript, Biology, World History..." />
+                    </div>
+
+                    <div class="practice-rules-card">
+                        <div class="rules-title">◈ How It Works</div>
+                        <div class="rules-list">
+                            <div class="rule-item">
+                                <span class="rule-icon rule-easy">①</span>
+                                <span>Start with <strong>Easy</strong> level questions</span>
+                            </div>
+                            <div class="rule-item">
+                                <span class="rule-icon rule-medium">②</span>
+                                <span>Answer <strong>5 Easy</strong> correctly → unlock <strong>Medium</strong></span>
+                            </div>
+                            <div class="rule-item">
+                                <span class="rule-icon rule-hard">③</span>
+                                <span>Answer <strong>5 Medium</strong> correctly → unlock <strong>Hard</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="startPractice()" style="margin-top: 16px;">
+                        ↳ Start Practice
+                    </button>
+                    <button class="btn btn-outline" onclick="goHome()" style="margin-top: 10px; width: 100%;">
+                        ↩ Back to Home
+                    </button>
+                </div>
+
+                <!-- ═══ LEVEL PROGRESS DASHBOARD ═══ -->
+                <div id="dashboardSection" class="hidden">
+                    <div class="level-progress">
+                        <div class="level-card active" id="levelCard-easy" onclick="selectLevel('easy')">
+                            <div class="level-header">
+                                <span class="level-badge level-badge-easy">Easy</span>
+                                <span class="level-status" id="levelStatus-easy">● Active</span>
+                            </div>
+                            <div class="level-score" id="levelScore-easy">0 / 5 correct</div>
+                            <div class="level-progress-bar">
+                                <div class="level-fill level-fill-easy" id="levelFill-easy" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="level-card locked" id="levelCard-medium" onclick="selectLevel('medium')">
+                            <div class="level-header">
+                                <span class="level-badge level-badge-medium">Medium</span>
+                                <span class="level-status" id="levelStatus-medium">🔒 Locked</span>
+                            </div>
+                            <div class="level-score" id="levelScore-medium">Need 5 Easy correct</div>
+                            <div class="level-progress-bar">
+                                <div class="level-fill level-fill-medium" id="levelFill-medium" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="level-card locked" id="levelCard-hard" onclick="selectLevel('hard')">
+                            <div class="level-header">
+                                <span class="level-badge level-badge-hard">Hard</span>
+                                <span class="level-status" id="levelStatus-hard">🔒 Locked</span>
+                            </div>
+                            <div class="level-score" id="levelScore-hard">Need 5 Medium correct</div>
+                            <div class="level-progress-bar">
+                                <div class="level-fill level-fill-hard" id="levelFill-hard" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <!-- Current Question Area -->
+                    <div id="questionArea">
+                        <div id="questionLoading" class="ai-loading hidden">
+                            <div class="ai-spinner"></div>
+                            <p>Generating question...</p>
+                        </div>
+                        <div id="questionContent"></div>
+                    </div>
+
+                    <!-- Feedback Area -->
+                    <div id="feedbackArea" class="hidden"></div>
+
+                    <!-- Action buttons -->
+                    <div class="btn-row" id="practiceActions">
+                        <button class="btn btn-gold" id="nextBtn" onclick="loadNextQuestion()" style="display:none;">
+                            ▶ Next Question
+                        </button>
+                        <button class="btn btn-outline" onclick="finishPractice()">
+                            ◼ Finish Practice
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ═══ SUMMARY SECTION ═══ -->
+                <div id="summarySection" class="hidden">
+                    <div id="summaryContent"></div>
+                    <div class="btn-row" style="margin-top: 24px;">
+                        <button class="btn btn-gold" onclick="restartPractice()">↻ Practice Again</button>
+                        <button class="btn btn-outline" onclick="goHome()">↩ Home</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/practice.js"></script>
+</body>
+
+</html>
