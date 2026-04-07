@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz — QuizFlow</title>
+    <meta name="description" content="Take the QuizFlow quiz — timed questions with detailed answer explanations">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <span class="corner-mark">◈</span>
+
+    <div class="stage quiz-stage">
+        <div class="card">
+            <div class="card-header">
+                <div class="header-label">Live Assessment</div>
+                <div class="header-title">Quiz</div>
+                <div class="header-subtitle" id="quizMeta">Answer all questions carefully</div>
+                <div class="header-deco">?</div>
+            </div>
+            <div class="card-body">
+                <div class="role-badge"><span class="dot"></span>User Session</div>
+
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill" style="width:100%"></div>
+                </div>
+
+                <!-- Score view (hidden until submit) -->
+                <div id="scoreView" class="hidden">
+                    <div class="score-display">
+                        <div class="score-big" id="scoreBig">0<span>/0</span></div>
+                        <div class="score-label">Final Score</div>
+                        <div class="score-bar-wrap">
+                            <div class="score-bar">
+                                <div class="score-bar-fill" id="scoreBarFill" style="width:0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz questions -->
+                <div class="quiz-scroll" id="quizScrollArea">
+                    <div id="quiz"></div>
+                </div>
+
+                <!-- Module Analyzer (after submit) -->
+                <div class="quiz-scroll hidden" id="analyzerArea">
+                    <div id="analyzerContent"></div>
+                </div>
+
+                <!-- Justification Review (after submit) -->
+                <div class="quiz-scroll hidden" id="justificationArea">
+                    <div id="justificationList"></div>
+                </div>
+
+                <div class="btn-row" id="quizActions">
+                    <button class="btn btn-gold" onclick="submitQuiz()">✓ Submit Quiz</button>
+                    <button class="btn btn-outline" onclick="logout()">↩ Logout</button>
+                </div>
+                <div class="btn-row hidden" id="afterSubmitActions">
+                    <button class="btn btn-gold" onclick="showView('analyzer')">◉ Analyze</button>
+                    <button class="btn btn-gold" onclick="showView('justifications')">💡 Explanations</button>
+                    <button class="btn btn-outline" onclick="logout()">↩ Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="quiz.js"></script>
+</body>
+
+</html>
