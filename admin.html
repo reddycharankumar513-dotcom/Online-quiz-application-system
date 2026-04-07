@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — QuizFlow</title>
+    <meta name="description" content="QuizFlow Admin Panel — Manage quiz questions, set time limits, and generate AI-powered modules">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <span class="corner-mark">◈</span>
+
+    <div class="stage admin-stage">
+        <div class="card">
+            <div class="card-header">
+                <div class="header-label">Control Panel</div>
+                <div class="header-title">Admin Suite</div>
+                <div class="header-subtitle">Manage questions, time & AI-powered modules</div>
+                <div class="header-deco">A</div>
+            </div>
+            <div class="card-body">
+                <div class="role-badge"><span class="dot"></span>Admin Session</div>
+
+                <!-- Tab Navigation -->
+                <div class="tab-nav">
+                    <button class="tab-btn active" id="tabBtnQuestions" onclick="switchTab('questions')">
+                        <span class="tab-icon">✎</span> Questions
+                    </button>
+                    <button class="tab-btn" id="tabBtnAI" onclick="switchTab('ai')">
+                        <span class="tab-icon">⚡</span> AI Module
+                    </button>
+                    <button class="tab-btn" id="tabBtnStats" onclick="switchTab('stats')">
+                        <span class="tab-icon">◉</span> Stats
+                    </button>
+                </div>
+
+                <!-- ═══════════ TAB 1: QUESTIONS ═══════════ -->
+                <div class="tab-content active" id="tabQuestions">
+
+                    <!-- Add Question Form -->
+                    <div class="section-label">Add New Question</div>
+
+                    <div class="input-group">
+                        <label>Question</label>
+                        <input type="text" class="field" id="q" placeholder="Type your question here…" />
+                    </div>
+
+                    <div class="q-grid" style="margin-top:14px;">
+                        <div class="input-group">
+                            <label>Option 1</label>
+                            <input type="text" class="field" id="o1" placeholder="First option" />
+                        </div>
+                        <div class="input-group">
+                            <label>Option 2</label>
+                            <input type="text" class="field" id="o2" placeholder="Second option" />
+                        </div>
+                        <div class="input-group">
+                            <label>Option 3</label>
+                            <input type="text" class="field" id="o3" placeholder="Third option" />
+                        </div>
+                        <div class="input-group">
+                            <label>Option 4</label>
+                            <input type="text" class="field" id="o4" placeholder="Fourth option" />
+                        </div>
+                    </div>
+
+                    <div class="q-grid" style="margin-top:4px;">
+                        <div class="input-group">
+                            <label>Correct Answer (1 – 4)</label>
+                            <input type="text" class="field" id="ans" placeholder="e.g. 2" />
+                        </div>
+                        <div class="input-group">
+                            <label>Time Limit (seconds)</label>
+                            <input type="number" class="field" id="timeLimit" placeholder="e.g. 30 (optional)" min="5" max="300" />
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-top:4px;">
+                        <label>Answer Justification</label>
+                        <textarea class="field field-textarea" id="justification" placeholder="Explain why this is the correct answer… (optional)" rows="3"></textarea>
+                    </div>
+
+                    <div class="btn-row">
+                        <button class="btn btn-gold" onclick="addQuestion()">＋ Add Question</button>
+                        <button class="btn btn-outline" onclick="logout()">↩ Logout</button>
+                    </div>
+
+                    <!-- Question List -->
+                    <div class="section-divider"></div>
+                    <div class="section-label">Question Bank</div>
+                    <div class="question-bank-scroll" id="questionBankArea">
+                        <div id="questionBank" class="question-bank">
+                            <div class="empty-state">
+                                <div class="icon">◻</div>
+                                <p>Loading questions…</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════ TAB 2: AI MODULE MAKER ═══════════ -->
+                <div class="tab-content" id="tabAI">
+
+                    <div class="section-label">AI Quiz Generator</div>
+                    <p class="section-desc">Generate quiz modules instantly using AI. Preview the questions and import the ones you like.</p>
+
+                    <div class="input-group">
+                        <label>Topic / Subject</label>
+                        <input type="text" class="field" id="aiTopic" placeholder="e.g. JavaScript Closures, World War II, Photosynthesis…" />
+                    </div>
+
+                    <div class="q-grid">
+                        <div class="input-group">
+                            <label>Number of Questions</label>
+                            <select class="field field-select" id="aiCount">
+                                <option value="3">3 Questions</option>
+                                <option value="5" selected>5 Questions</option>
+                                <option value="10">10 Questions</option>
+                                <option value="15">15 Questions</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Difficulty</label>
+                            <select class="field field-select" id="aiDifficulty">
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="btn-row">
+                        <button class="btn btn-gold" id="generateBtn" onclick="generateAIQuiz()">⚡ Generate Quiz</button>
+                    </div>
+
+                    <!-- AI Loading State -->
+                    <div class="ai-loading hidden" id="aiLoading">
+                        <div class="ai-spinner"></div>
+                        <p>AI is crafting your questions…</p>
+                    </div>
+
+                    <!-- AI Generated Preview -->
+                    <div class="hidden" id="aiPreviewArea">
+                        <div class="section-divider"></div>
+                        <div class="section-label">Generated Questions — Preview</div>
+                        <div class="ai-select-all">
+                            <label class="option-label compact">
+                                <input type="checkbox" id="aiSelectAll" onchange="toggleSelectAll()">
+                                Select All
+                            </label>
+                        </div>
+                        <div id="aiPreview" class="question-bank"></div>
+                        <div class="btn-row">
+                            <button class="btn btn-gold" onclick="importSelected()">↳ Import Selected</button>
+                            <button class="btn btn-outline" onclick="clearPreview()">✕ Clear</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════ TAB 3: STATS ═══════════ -->
+                <div class="tab-content" id="tabStats">
+                    <div class="section-label">Score Analytics</div>
+                    <div class="chart-container">
+                        <canvas id="scoreChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>
